@@ -1,28 +1,27 @@
+import json
 import logging
 import sys
 
-# used "pip install -e "git+https://github.com/openskynetwork/opensky-api.git#egg=opensky-api&subdirectory=python"
-# command to install api from GitHub
-from src.python.python.opensky_api import OpenSkyApi
+import requests
 
 # want to see if connection is successful:
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 
 def get_credentials_from_file():
-    file = open("opensky_credentials", "r").read()
+    file = open(r"extract_data_from_OpenSkyApi\opensky_credentials", "r").read()
     # get username, password from first and second lines of text file:
     username, password = file.split("\n")[0], file.split("\n")[1]
-    return username, password
+    return {"login": username, "password": password}
 
 
-def main():
-    username, password = get_credentials_from_file()
-    api = OpenSkyApi(username=username, password=password)
-    states = api.get_states()
-    for s in states.states:
-        print("(%r, %r, %r, %r)" % (s.longitude, s.latitude, s.baro_altitude, s.velocity))
+def get_states():
+    credentials = get_credentials_from_file()
+    states = requests.get("https://opensky-network.org/api/states/all", data=credentials).json()
+    # save_requests_to_json("all_states.json", states)
+    return states
 
 
-if __name__ == "__main__":
-    main()
+def save_requests_to_json(filename, my_dict):
+    with open(filename, 'w') as fp:
+        json.dump(my_dict, fp)
