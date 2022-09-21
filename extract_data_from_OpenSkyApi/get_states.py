@@ -9,10 +9,11 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 
 def get_credentials_from_file():
-    file = open(r"configs\opensky_credentials", "r").read()
-    # get username, password from first and second lines of text file:
-    username, password = file.split("\n")[0], file.split("\n")[1]
-    return {"login": username, "password": password}
+    with open(r"configs\opensky_credentials.json") as json_file:
+        data = json.load(json_file)
+        # get username, password from first and second lines of text file:
+        username, password = data["username"], data["password"]
+        return {"login": username, "password": password}
 
 
 def get_states():
