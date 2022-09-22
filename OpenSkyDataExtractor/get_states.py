@@ -12,20 +12,21 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 class DataIngestion:
     def __init__(self):
-        self.states = {}
+        try:
+            self.states = self.get_states()
+        except Exception as e:
+            logging.info("Exception occurred: ", e)
 
     def get_states(self):
         credentials = get_credentials_from_file()
         logging.info("Authenticating to https://opensky-network.org/api/states/all and getting all data for states")
-        self.states = requests.get("https://opensky-network.org/api/states/all", data=credentials).json()
-        DataIngestion.save_requests_to_json(self)
-        return self.states
+        states = requests.get("https://opensky-network.org/api/states/all", data=credentials).json()
+        return states
 
     def save_requests_to_json(self, filename="all_states.json"):
         with open(filename, 'w') as fp:
             json.dump(self.states, fp)
 
-    @classmethod
-    def print_states(cls):
-        pprint.pprint(DataIngestion().get_states())
+    def print_states(self):
+        pprint.pprint(self.states)
         return
