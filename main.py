@@ -2,7 +2,7 @@ import logging
 import sys
 from datetime import datetime
 
-from extract_data_from_OpenSkyApi.get_states import DataIngestion
+from OpenSkyDataExtractor.get_states import DataIngestion
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
