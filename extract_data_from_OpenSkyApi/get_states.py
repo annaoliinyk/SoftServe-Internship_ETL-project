@@ -1,28 +1,31 @@
 import json
 import logging
+import pprint
 import sys
 
 import requests
 
-# want to see if connection is successful:
-logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+from configs.get_api_user_credentials import get_credentials_from_file
+
+logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 
-def get_credentials_from_file():
-    with open(r"configs\opensky_credentials.json") as json_file:
-        data = json.load(json_file)
-        # get username, password from first and second lines of text file:
-        username, password = data["username"], data["password"]
-        return {"login": username, "password": password}
+class DataIngestion:
+    def __init__(self):
+        self.states = {}
 
+    def get_states(self):
+        credentials = get_credentials_from_file()
+        logging.info("Authenticating to https://opensky-network.org/api/states/all and getting all data for states")
+        self.states = requests.get("https://opensky-network.org/api/states/all", data=credentials).json()
+        DataIngestion.save_requests_to_json(self)
+        return self.states
 
-def get_states():
-    credentials = get_credentials_from_file()
-    states = requests.get("https://opensky-network.org/api/states/all", data=credentials).json()
-    # save_requests_to_json("all_states.json", states)
-    return states
+    def save_requests_to_json(self, filename="all_states.json"):
+        with open(filename, 'w') as fp:
+            json.dump(self.states, fp)
 
-
-def save_requests_to_json(filename, my_dict):
-    with open(filename, 'w') as fp:
-        json.dump(my_dict, fp)
+    @classmethod
+    def print_states(cls):
+        pprint.pprint(DataIngestion().get_states())
+        return
