@@ -4,3 +4,6 @@ poetry-env/
 pyproject.toml
 */__pycache__/
 opensky_credentials.json
+airflow_docker/dags/*
+airflow_docker/logs/*
+airflow_docker/plugins/*
