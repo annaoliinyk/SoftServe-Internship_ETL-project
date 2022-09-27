@@ -1743,7 +1743,7 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "01f79cf9195718812704cbde7695cb74c5b2acfe615ba8deda1f45a952832ab0"
+content-hash = "347735ebb25b5db143a496aeade6155ffa4b5b5a7fadc44bc4310554b6d7c6be"
 
 [metadata.files]
 alembic = [
@@ -1980,6 +1980,9 @@ email-validator = [
 exceptiongroup = [
     {file = "exceptiongroup-1.0.0rc9-py3-none-any.whl", hash = "sha256:2e3c3fc1538a094aab74fad52d6c33fc94de3dfee3ee01f187c0e0c72aec5337"},
     {file = "exceptiongroup-1.0.0rc9.tar.gz", hash = "sha256:9086a4a21ef9b31c72181c77c040a074ba0889ee56a7b289ff0afb0d97655f96"},
+]
+extra = [
+    {file = "extra-0.0.0.20200726.tar.gz", hash = "sha256:f67289de5fe53f1f7286bfef1d2c066c75d440347b0620047f31e0635a4fe672"},
 ]
 Flask = [
     {file = "Flask-2.2.2-py3-none-any.whl", hash = "sha256:b9c46cc36662a7949f34b52d8ec7bb59c0d74ba08ba6cb9ce9adc1d8676d9526"},
