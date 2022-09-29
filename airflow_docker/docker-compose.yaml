@@ -1,36 +1,37 @@
 version: '3.9'
 x-airflow-common:
-  &airflow-common
   image: ${AIRFLOW_IMAGE_NAME:-apache/airflow:2.4.0}
-  environment:
-    &airflow-common-env
-    AIRFLOW__CORE__EXECUTOR: LocalExecutor
-    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
-    AIRFLOW__CORE__FERNET_KEY: ''
-    AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
+  environment: # used to pass environment variables straightly
+    # set mechanism by which task instances get run, SequentialExecutor by default
+    AIRFLOW__CORE__EXECUTOR: LocalExecutor  # LocalExecutor for small, single-machine installations
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow # set up a PostgreSQL db
+    AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'false'  # false to execute dags on creating, true to pause execution
     AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
   volumes:
-    - ./dags:/airflow_docker/dags
-    - ./logs:/airflow_docker/logs
-    - ./plugins:/airflow_docker/plugins
+    # mount (e.g.) local ./dags folder into the /opt/airflow/dags directory container
+    - ./dags:/opt/airflow/dags  # folder to store DAG files
+    - ./logs:/opt/airflow/logs  # contains logs from task execution and scheduler
+    - ./plugins:/opt/airflow/plugins  # folder for custom plugins - operators, sensors, hooks used to customize Airflow
 
+# Computing components of an application;
+# abstract concept implemented on platforms by running the same container image (and configuration) one or more times
 services:
   postgres:
     image: postgres:13
-    environment:
+    environment: # used to pass environment variables straightly
       POSTGRES_USER: airflow
       POSTGRES_PASSWORD: airflow
       POSTGRES_DB: airflow
     volumes:
-      - postgres-db-volume:/var/lib/postgresql/data
-    healthcheck:
+      - postgres-db-volume:/var/lib/postgresql/data  # mounted at /var/lib/postgresql/data - the directory where
+      # Postgres stores all the relevant tables and databases, postgres-db-volume defined at the last line of the file
+    healthcheck:  # determine the "health" of a running container
       test: [ "CMD", "pg_isready", "-U", "airflow" ]
       interval: 5s
       retries: 5
     restart: always
 
   airflow-webserver:
-    <<: *airflow-common
     command: webserver
     ports:
       - 8080:8080
@@ -42,7 +43,6 @@ services:
     restart: always
 
   airflow-scheduler:
-    <<: *airflow-common
     command: scheduler
     healthcheck:
       test: [ "CMD-SHELL", 'airflow jobs check --job-type SchedulerJob --hostname "$${HOSTNAME}"' ]
@@ -52,7 +52,6 @@ services:
     restart: always
 
   airflow-init:
-    <<: *airflow-common
     entrypoint: /bin/bash
     command:
       - -c
@@ -60,8 +59,7 @@ services:
         mkdir -p /sources/logs /sources/dags /sources/plugins
         chown -R "${AIRFLOW_UID}:0" /sources/{logs,dags,plugins}
         exec /entrypoint airflow version
-    environment:
-      <<: *airflow-common-env
+    environment: # used to pass environment variables straightly
       _AIRFLOW_DB_UPGRADE: 'true'
       _AIRFLOW_WWW_USER_CREATE: 'true'
       _AIRFLOW_WWW_USER_USERNAME: ${_AIRFLOW_WWW_USER_USERNAME:-airflow}
