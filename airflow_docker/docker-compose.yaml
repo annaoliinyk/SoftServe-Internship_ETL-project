@@ -25,30 +25,16 @@ services:
     volumes:
       - postgres-db-volume:/var/lib/postgresql/data  # mounted at /var/lib/postgresql/data - the directory where
       # Postgres stores all the relevant tables and databases, postgres-db-volume defined at the last line of the file
-    healthcheck:  # determine the "health" of a running container
-      test: [ "CMD", "pg_isready", "-U", "airflow" ]
-      interval: 5s
-      retries: 5
     restart: always
 
   airflow-webserver:
     command: webserver
     ports:
       - 8080:8080
-    healthcheck:
-      test: [ "CMD", "curl", "--fail", "http://localhost:8080/health" ]
-      interval: 10s
-      timeout: 10s
-      retries: 5
     restart: always
 
   airflow-scheduler:
     command: scheduler
-    healthcheck:
-      test: [ "CMD-SHELL", 'airflow jobs check --job-type SchedulerJob --hostname "$${HOSTNAME}"' ]
-      interval: 10s
-      timeout: 10s
-      retries: 5
     restart: always
 
   airflow-init:
