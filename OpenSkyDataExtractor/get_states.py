@@ -4,6 +4,7 @@ import pprint
 import sys
 
 import requests
+import configs
 
 from configs.get_api_user_credentials import get_credentials_from_file
 
