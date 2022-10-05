@@ -1,10 +1,16 @@
+import os.path
 from datetime import timedelta
 
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.utils.dates import days_ago
 
-from OpenSkyDataExtractor.get_states import DataIngestion
+import sys
+
+import OpenSkyDataExtractor.get_states
+
+sys.path.insert(0, os.path.abspath("OpenSkyDataExtractor\get_states\DataIngestion"))
+# from OpenSkyDataExtractor.get_states import DataIngestion
 
 DEFAULT_ARGS = {
     'owner': 'airflow',
