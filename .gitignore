@@ -3,4 +3,4 @@
 poetry-env/
 pyproject.toml
 */__pycache__/
-opensky_credentials.json
+configs/opensky_credentials.json
