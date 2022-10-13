@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "softserve-internship-etl-project"
+version = "0.1.0"
+description = ""
+authors = ["annaoliinyk <anna12ol345@gmail.com>"]
+readme = "README.md"
+packages = [{include = "softserve_internship_etl_project"}]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+pyopensky = "^1.4"
+requests = "^2.28.1"
+apache-airflow = "^2.4.0"
+extra = "^0.0.0.20200726"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
