@@ -18,9 +18,21 @@ class DataIngestion:
             logging.info("Exception occurred: ", e)
 
     def get_states(self):
-        credentials = get_credentials_from_file()
-        logging.info("Authenticating to https://opensky-network.org/api/states/all and getting all data for states")
-        states = requests.get("https://opensky-network.org/api/states/all", data=credentials).json()
+        try:
+            # try getting states as authenticated user:
+            credentials = get_credentials_from_file()
+            states = requests.get("https://opensky-network.org/api/states/all", data=credentials).json()
+            logging.info("Logged in and authenticated to https://opensky-network.org/api/states/all and got all data "
+                         "for states")
+        except FileNotFoundError:
+            # try getting states as non-authenticated user:
+            states = requests.get("https://opensky-network.org/api/states/all").json()
+            logging.info("Authenticated to https://opensky-network.org/api/states/all and got all data for states")
+        except:
+            # else get data from json file
+            with open('all_states.json', 'r') as f:
+                states = json.load(f)
+            logging.info("Got all data for states from local file")
         return states
 
     def save_requests_to_json(self, filename="all_states.json"):
