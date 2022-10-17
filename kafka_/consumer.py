@@ -2,7 +2,8 @@ import json
 
 from kafka import KafkaConsumer
 
-if __name__ == '__main__':
+
+def run_consumer():
     consumer = KafkaConsumer(
         'OpenSky_data_ingestion',
         bootstrap_servers='localhost:9092',

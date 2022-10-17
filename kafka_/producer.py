@@ -19,7 +19,8 @@ producer = KafkaProducer(
     value_serializer=serializer
 )
 
-if __name__ == '__main__':
+
+def run_producer():
     while True:
         state = get_a_state()
         print(f'Getting a state @{datetime.now()} | State info = {str(get_a_state())}')
