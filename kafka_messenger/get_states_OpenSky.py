@@ -1,17 +1,15 @@
-from random import randint
+from kafka_messenger.data_editor import RandomStateExtractor
 
-from OpenSkyDataExtractor.get_states import DataIngestion
+STATE_DICT_KEYS = ['icao24', 'values']
 
 
-def get_a_state() -> dict:
-    data_ingestion_obj = DataIngestion()
-    # returns a dict with keys 'states' and 'time', many states and one time value:
-    states_dict = data_ingestion_obj.get_states()
-    states_only_list = states_dict['states']  # want to get states only in a form of list
-    random_int = randint(0, len(states_only_list) - 1)
-    return_state = states_only_list[random_int]
-    icao24 = return_state[0]  # unique ICAO 24-bit address of the transponder in hex string representation, like an id
-    return {
-        'icao24': icao24,  # id
-        'values': return_state  # full info about the state
-    }
+class RandomState:
+    def get_random_state(self, data_ingestion_obj) -> dict:
+        # returns a dict with keys 'states' and 'time', many states and one time value:
+        states_dict = data_ingestion_obj.get_states()
+        random_state = RandomStateExtractor().extract_random_state(states_dict)
+        icao24 = random_state[0]  # unique ICAO 24-bit address of the transponder in hex string representation, like id
+        return {
+            STATE_DICT_KEYS[0]: icao24,  # id
+            STATE_DICT_KEYS[1]: random_state  # full info about the state
+        }
