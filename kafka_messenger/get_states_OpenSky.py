@@ -15,7 +15,3 @@ def get_a_state() -> dict:
         'icao24': icao24,  # id
         'values': return_state  # full info about the state
     }
-
-
-if __name__ == "__main__":
-    print(get_a_state())
