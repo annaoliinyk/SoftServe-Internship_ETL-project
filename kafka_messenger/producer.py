@@ -5,7 +5,7 @@ from datetime import datetime
 
 from kafka import KafkaProducer
 
-from kafka_.get_states_OpenSky import get_a_state
+from kafka_messenger.get_states_OpenSky import get_a_state
 
 
 class MyProducer:

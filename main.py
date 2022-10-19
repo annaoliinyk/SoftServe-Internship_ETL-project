@@ -5,7 +5,7 @@ from datetime import datetime
 import kafka.errors
 
 from OpenSkyDataExtractor.get_states import DataIngestion
-from kafka_ import producer, consumer
+from kafka_messenger import producer, consumer
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
