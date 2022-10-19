@@ -1,11 +1,15 @@
 import json
+import logging
 import random
+import sys
 import time
 from datetime import datetime
 
 from kafka import KafkaProducer
 
-from kafka_messenger.get_states_OpenSky import get_a_state
+from kafka_messenger.get_states_OpenSky import RandomState
+
+logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 
 class MyProducer:
@@ -20,10 +24,10 @@ class MyProducer:
     def serializer(self, state):
         return json.dumps(state).encode('utf-8')
 
-    def run_producer(self):
+    def run_producer(self, data_ingestion_obj):
         while True:
-            state = get_a_state()
-            print(f'Getting a state @{datetime.now()} | State info = {str(get_a_state())}')
+            state = RandomState().get_random_state(data_ingestion_obj)
+            logging.info(f'Getting a state @{datetime.now()} | State info = {str(state)}')
             self.producer.send('OpenSky_data_ingestion', state)
             sleep_time = random.randint(1, 11)
             time.sleep(sleep_time)
