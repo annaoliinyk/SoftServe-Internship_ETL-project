@@ -1,6 +1,10 @@
 import json
+import logging
+import sys
 
 from kafka import KafkaConsumer
+
+logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 
 class MyConsumer:
@@ -13,4 +17,4 @@ class MyConsumer:
 
     def run_consumer(self):
         for state in self.consumer:
-            print(json.loads(state.value))
+            logging.info(json.loads(state.value))
