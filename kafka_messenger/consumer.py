@@ -1,4 +1,3 @@
-import json
 import logging
 import sys
 
@@ -14,7 +13,3 @@ class MyConsumer:
             bootstrap_servers='localhost:9092',
             auto_offset_reset='earliest'
         )
-
-    def run_consumer(self):
-        for state in self.consumer:
-            logging.info(json.loads(state.value))
