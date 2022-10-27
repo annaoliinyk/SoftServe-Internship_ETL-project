@@ -1,6 +1,5 @@
+from configs.config import STATE_DICT_KEYS
 from kafka_messenger.data_editor import RandomStateExtractor
-
-STATE_DICT_KEYS = ['icao24', 'values']
 
 
 class RandomState:
