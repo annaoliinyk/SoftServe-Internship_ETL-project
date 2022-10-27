@@ -19,7 +19,7 @@ def main():
     logging.info("Program ended: {}".format(end_timestamp))
     logging.info("Program running took: {}".format(end_timestamp - start_timestamp))
     try:
-        consumer.MyConsumer().run_consumer()
+        consumer.MyConsumer()
         producer.MyProducer().run_producer(data_ingestion_obj)
     except kafka.errors.NoBrokersAvailable:
         logging.error("Please execute container before running container and producer")
