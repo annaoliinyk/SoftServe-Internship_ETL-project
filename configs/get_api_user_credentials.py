@@ -1,8 +1,7 @@
 import json
+import os
 
-import definitions
-
-CONFIG_PATH = definitions.CONFIG_PATH
+CONFIG_PATH = os.path.dirname(os.path.abspath(__file__))
 
 
 def get_credentials_from_file():
