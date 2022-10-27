@@ -3,9 +3,8 @@ import logging
 import os.path
 import pprint
 import sys
-
 import requests
-
+from configs.config import ALL_STATES_LINK
 from configs.get_api_user_credentials import get_credentials_from_file
 
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -24,13 +23,13 @@ class DataIngestion:
         try:
             # try getting states as authenticated user:
             credentials = get_credentials_from_file()
-            states = requests.get("https://opensky-network.org/api/states/all", data=credentials).json()
-            logging.info("Logged in and authenticated to https://opensky-network.org/api/states/all and got all data "
+            states = requests.get(ALL_STATES_LINK, data=credentials).json()
+            logging.info(f"Logged in and authenticated to {ALL_STATES_LINK} and got all data "
                          "for states")
         except FileNotFoundError:
             # try getting states as non-authenticated user:
-            states = requests.get("https://opensky-network.org/api/states/all").json()
-            logging.info("Authenticated to https://opensky-network.org/api/states/all and got all data for states")
+            states = requests.get(ALL_STATES_LINK).json()
+            logging.info(f"Authenticated to {ALL_STATES_LINK} and got all data for states")
         except:
             # else get data from json file
             with open(os.path.join(CURRENT_PATH, 'all_states.json'), 'r') as f:
