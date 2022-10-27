@@ -1,9 +1,7 @@
 import logging
 import sys
 from datetime import datetime
-
 import kafka.errors
-
 from OpenSkyDataExtractor.get_states import DataIngestion
 from kafka_messenger import producer, consumer
 
@@ -20,7 +18,7 @@ def main():
     logging.info("Program running took: {}".format(end_timestamp - start_timestamp))
     try:
         consumer.MyConsumer()
-        producer.MyProducer().run_producer(data_ingestion_obj)
+        producer.MyProducer().send_all_states(data_ingestion_obj)
     except kafka.errors.NoBrokersAvailable:
         logging.error("Please execute container before running container and producer")
 
