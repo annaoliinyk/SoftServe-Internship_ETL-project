@@ -5,6 +5,7 @@ import time
 from datetime import datetime
 from kafka import KafkaProducer
 from kafka_messenger.get_states_OpenSky import StatesOpenSky
+from configs.config import BOOTSTRAP_SERVER
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
@@ -13,7 +14,7 @@ class MyProducer:
     def __init__(self):
         # Kafka Producer
         self.producer = KafkaProducer(
-            bootstrap_servers=['localhost:9092'],
+            bootstrap_servers=[BOOTSTRAP_SERVER],
             value_serializer=self.serializer
         )
 
