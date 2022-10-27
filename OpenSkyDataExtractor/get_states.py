@@ -1,11 +1,14 @@
 import json
 import logging
+import os.path
 import pprint
 import sys
 
 import requests
 
 from configs.get_api_user_credentials import get_credentials_from_file
+
+CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
@@ -30,7 +33,7 @@ class DataIngestion:
             logging.info("Authenticated to https://opensky-network.org/api/states/all and got all data for states")
         except:
             # else get data from json file
-            with open('all_states.json', 'r') as f:
+            with open(os.path.join(CURRENT_PATH, 'all_states.json'), 'r') as f:
                 states = json.load(f)
             logging.info("Got all data for states from local file")
         return states
