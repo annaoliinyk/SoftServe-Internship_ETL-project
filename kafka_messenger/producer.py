@@ -3,9 +3,11 @@ import logging
 import sys
 import time
 from datetime import datetime
+
 from kafka import KafkaProducer
-from kafka_messenger.get_states_OpenSky import StatesOpenSky
+
 from configs.config import BOOTSTRAP_SERVER
+from kafka_messenger.data_editor import StatesExtractor
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
@@ -22,10 +24,10 @@ class MyProducer:
     def serializer(self, state):
         return json.dumps(state).encode('utf-8')
 
-    def send_all_states(self, data_ingestion_obj):
-        states = StatesOpenSky().get_all_states(data_ingestion_obj)
+    def send_all_states(self, states_dict):
+        states = StatesExtractor().extract_states_from_dict(states_dict)
         for state in states:
-            logging.info(f'Getting all the states @{datetime.now()} | State info = '
-                         f'{StatesOpenSky().return_state_info_dict(str(state))}')
+            state_as_dict = StatesExtractor().return_state_info_dict(state)
+            logging.info(f'Getting all the states @{datetime.now()} | State info = {state_as_dict}')
             self.producer.send('OpenSky_data_ingestion', state)
             time.sleep(10)
