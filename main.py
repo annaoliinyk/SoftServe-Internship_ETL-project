@@ -3,9 +3,8 @@ import sys
 from datetime import datetime
 
 import kafka.errors
-
-from OpenSkyDataExtractor.get_states import DataIngestion
 from kafka_messenger import producer, consumer
+from OpenSkyDataExtractor.get_states import DataIngestion
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
