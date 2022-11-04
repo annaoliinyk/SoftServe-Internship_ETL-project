@@ -6,8 +6,9 @@ from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.utils.dates import days_ago
 
-sys.path.insert(0, os.path.abspath(os.path.dirname(os.getcwd() + r"\OpenSkyDataExtractor")))
-from OpenSkyDataExtractor import get_states
+from OpenSkyDataExtractor.get_states import DataIngestion
+
+sys.path.insert(0, os.path.abspath(os.path.dirname(os.path.join(os.getcwd() + "OpenSkyDataExtractor"))))
 
 DEFAULT_ARGS = {
     'owner': 'airflow',
@@ -18,7 +19,7 @@ DEFAULT_ARGS = {
 
 
 def print_states():
-    get_states.DataIngestion().print_states()
+    DataIngestion().print_states()
 
 
 with DAG(

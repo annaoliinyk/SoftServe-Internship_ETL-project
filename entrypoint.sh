@@ -1,7 +1,9 @@
 #!/bin/sh
 
 # Global defaults and back-compat
-: "${AIRFLOW_HOME:="/usr/local/airflow"}"
+: "${AIRFLOW_HOME:="/opt/airflow"}"
+# Fernet key used for password encryption, like "secret key" authenticated cryptography.
+# Using script to solve the frequent Fernet Key cryptography error:
 : "${AIRFLOW__CORE__FERNET_KEY:=${FERNET_KEY:=$(python -c "from cryptography.fernet import Fernet; FERNET_KEY = Fernet.generate_key().decode(); print(FERNET_KEY)")}}"
 : "${AIRFLOW__CORE__EXECUTOR:=${EXECUTOR:-Local}Executor}"
 
@@ -9,8 +11,6 @@ export \
   AIRFLOW_HOME \
   AIRFLOW__CORE__EXECUTOR \
   AIRFLOW__CORE__FERNET_KEY \
-
-export AIRFLOW_HOME=~/airflow
 
 if [ -e "/requirements.txt" ]; then
     $(command -v pip) install --user -r /requirements.txt
