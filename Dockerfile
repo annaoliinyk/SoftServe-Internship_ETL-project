@@ -2,11 +2,11 @@ FROM apache/airflow:2.4.0
 
 USER root
 
-ENV AIRFLOW_HOME=/usr/local/airflow
+RUN export AIRFLOW_HOME=/usr/local/airflow
 
 COPY ./entrypoint.sh ./entrypoint.sh
 
-RUN chown -R airflow: ${AIRFLOW_HOME}
+RUN sudo chown -R airflow: ${AIRFLOW_HOME}
 RUN chmod +x ./entrypoint.sh
 
 USER airflow
