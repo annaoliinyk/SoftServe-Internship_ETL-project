@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Global defaults and back-compat
-: "${AIRFLOW_HOME:="/opt/airflow"}"
+: "${AIRFLOW_HOME:="/usr/local/airflow"}"
 # Fernet key used for password encryption, like "secret key" authenticated cryptography.
 # Using script to solve the frequent Fernet Key cryptography error:
 : "${AIRFLOW__CORE__FERNET_KEY:=${FERNET_KEY:=$(python -c "from cryptography.fernet import Fernet; FERNET_KEY = Fernet.generate_key().decode(); print(FERNET_KEY)")}}"
