@@ -6,15 +6,16 @@ services:
   postgres:
     image: "postgres:13"
     container_name: "postgres_for_etl"
-    environment:  # used to pass environment variables straightly
+    environment: # used to pass environment variables straightly
       - POSTGRES_USER=airflow
       - POSTGRES_PASSWORD=airflow
       - POSTGRES_DB=airflow
     ports:
       - "5432:5432"
     volumes:
-      - ./data/postgres:/var/lib/postgresql/data  # mounted at /var/lib/postgresql/data - the directory where
-#       Postgres stores all the relevant tables and databases, postgres-db-volume defined at the last line of the file
+      # mounted at /var/lib/postgresql/data - the directory where Postgres stores all the relevant tables and databases,
+      # postgres-db-volume defined at the last line of the file
+      - ./data/postgres:/var/lib/postgresql/data
 
   webserver:
     build: .
