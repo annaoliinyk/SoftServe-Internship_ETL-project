@@ -23,8 +23,8 @@ services:
     depends_on:
       - postgres
     volumes:
-      - ./data/airflow/dags:/usr/local/airflow/dags
-      - ./data/airflow/logs:/usr/local/airflow/logs
+      - ./data/dags:/usr/local/airflow/dags
+      - ./data/logs:/usr/local/airflow/logs
     ports:
       - "8080:8080"
 
