@@ -2,15 +2,16 @@ FROM apache/airflow:2.4.0
 
 USER root
 
-RUN export AIRFLOW_HOME=/usr/local/airflow
+ENV AIRFLOW_HOME=/usr/local/airflow
 
-COPY ./entrypoint.sh ./entrypoint.sh
+WORKDIR ${AIRFLOW_HOME}
 
-RUN sudo chown -R airflow: ${AIRFLOW_HOME}
+COPY entrypoint.sh ./entrypoint.sh
+
+RUN chown -R airflow: $AIRFLOW_HOME
 RUN chmod +x ./entrypoint.sh
 
 USER airflow
-WORKDIR ${AIRFLOW_HOME}
 
 EXPOSE 8080
 
