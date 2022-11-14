@@ -5,5 +5,4 @@ poetry-env/
 configs/opensky_credentials.json
 __pycache__/
 airflow.db
-airflow/data/logs
-airflow/data/postgre*
+airflow/data
