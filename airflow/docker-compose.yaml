@@ -23,10 +23,11 @@ services:
     depends_on:
       - postgres
     volumes:
-      - ./data/dags:/usr/local/airflow/dags
-      - ./data/logs:/usr/local/airflow/logs
+      - ./dags:/SoftServe-Internship_ETL-project/airflow/data/dags
+      - ./data/logs:/SoftServe-Internship_ETL-project/airflow/data/logs
     ports:
       - "8080:8080"
 
 volumes:
   data:
+  dags:
