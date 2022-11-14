@@ -6,11 +6,9 @@ if [ -e "/requirements.txt" ]; then
     $(command -v pip) install --user -r /requirements.txt
 fi
 
-: "${AIRFLOW_HOME:="/usr/local/airflow"}"
 Executor='LocalExecutor'
 Fernet_key=''
 
-export AIRFLOW_HOME
 export AIRFLOW__CORE__EXECUTOR=$Executor
 export AIRFLOW__CORE__FERNET_KEY=$Fernet_key
 
