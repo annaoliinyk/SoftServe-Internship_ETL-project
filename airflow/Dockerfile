@@ -2,8 +2,9 @@ FROM apache/airflow:2.4.0
 
 USER root
 
-RUN export AIRFLOW_HOME=../
-ENV AIRFLOW_HOME=../
+ENV AIRFLOW_HOME=/SoftServe-Internship_ETL-project/
+ENV AIRFLOW__CORE__EXECUTOR='LocalExecutor'
+ENV AIRFLOW__CORE__FERNET_KEY=''
 
 WORKDIR ${AIRFLOW_HOME}
 
