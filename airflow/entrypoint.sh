@@ -4,13 +4,12 @@ echo "start"
 if [ -e "/requirements.txt" ]; then
     $(command -v pip) install --user --upgrade pip
     $(command -v pip) install --user -r /requirements.txt
+
+  export \
+       AIRFLOW_HOME \
+       AIRFLOW__CORE__EXECUTOR \
+       AIRFLOW__CORE__FERNET_KEY
 fi
-
-Executor='LocalExecutor'
-Fernet_key=''
-
-export AIRFLOW__CORE__EXECUTOR=$Executor
-export AIRFLOW__CORE__FERNET_KEY=$Fernet_key
 
 echo "AIRFLOW_HOME is $AIRFLOW_HOME"
 echo "AIRFLOW__CORE__EXECUTOR is $AIRFLOW__CORE__EXECUTOR"
