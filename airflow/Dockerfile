@@ -2,7 +2,8 @@ FROM apache/airflow:2.4.0
 
 USER root
 
-ENV AIRFLOW_HOME=/usr/local/airflow
+RUN export AIRFLOW_HOME=../
+ENV AIRFLOW_HOME=../
 
 WORKDIR ${AIRFLOW_HOME}
 
