@@ -26,3 +26,5 @@ with DAG(
         task_id='ingest_data_using_python_operator',
         python_callable=DataIngestion().print_states
     )
+
+task_1
