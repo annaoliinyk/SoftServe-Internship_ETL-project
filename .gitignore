@@ -3,6 +3,7 @@
 poetry-env/
 */__pycache__/
 configs/opensky_credentials.json
+airflow/dags/configs/opensky_credentials.json
 __pycache__/
 airflow.db
-data/
+airflow/data
