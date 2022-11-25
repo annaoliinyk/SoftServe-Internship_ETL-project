@@ -12,6 +12,7 @@ pyopensky = "^1.4"
 requests = "^2.28.1"
 apache-airflow = "^2.4.0"
 extra = "^0.0.0.20200726"
+pyspark = "3.3.1"
 
 
 [build-system]
