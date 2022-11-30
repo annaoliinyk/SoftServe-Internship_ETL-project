@@ -1,5 +1,5 @@
 from pyspark.sql import SparkSession, DataFrame
-from pyspark.sql.functions import max
+from pyspark.sql.functions import max, min, sum
 from pyspark.sql.types import *
 
 JSON_PATH = r"C:\Users\anoliinyk\Documents\SoftServe_Internship\SoftServe-Internship_ETL-project\OpenSkyDataExtractor\all_states.json"
@@ -50,6 +50,47 @@ def get_airplanes_count_by_airport(df: DataFrame):
     print("\nCount of airplanes by airport:")
     airplanes_count_df = df.groupBy("origin_country").count()
     show_df(airplanes_count_df)
+    get_country_min_count_airplanes(airplanes_count_df)
+    get_country_max_count_airplanes(airplanes_count_df)
+    get_count_countries_on_c(airplanes_count_df)
+    get_count_countries_on_g(airplanes_count_df)
+    return airplanes_count_df
+
+
+def get_country_min_count_airplanes(airplanes_df: DataFrame):
+    print("Get countries with smallest number of airplanes")
+    min_count_airplanes_df = airplanes_df.select([min("count")])
+    min_count_airplanes = min_count_airplanes_df.first()[0]
+    min_count_airplanes_df2 = airplanes_df.select(airplanes_df["origin_country"], airplanes_df["count"]).filter(
+        airplanes_df["count"] == min_count_airplanes)
+    show_df(min_count_airplanes_df2)
+    return min_count_airplanes_df2
+
+
+def get_country_max_count_airplanes(airplanes_df: DataFrame):
+    print("Get countries with largest number of airplanes")
+    max_count_airplanes_df = airplanes_df.select([max("count")])
+    max_count_airplanes = max_count_airplanes_df.first()[0]
+    max_count_airplanes_df2 = airplanes_df.select(airplanes_df["origin_country"], airplanes_df["count"]).filter(
+        airplanes_df["count"] == max_count_airplanes)
+    show_df(max_count_airplanes_df2)
+    return max_count_airplanes_df2
+
+
+def get_count_countries_on_c(airplanes_df: DataFrame):
+    print("Get sum of airplanes for countries starting with C")
+    countries_on_c_df = airplanes_df.filter(airplanes_df.origin_country.startswith("C"))
+    sum_airplanes_c_df = countries_on_c_df.select([sum("count").alias("sum of airplanes from countries starting with C")])
+    show_df(sum_airplanes_c_df)
+    return sum_airplanes_c_df
+
+
+def get_count_countries_on_g(airplanes_df: DataFrame):
+    print("Get sum of airplanes for countries starting with G")
+    countries_on_g_df = airplanes_df.filter(airplanes_df.origin_country.startswith("G"))
+    sum_airplanes_g_df = countries_on_g_df.select([sum("count").alias("sum of airplanes from countries starting with G")])
+    show_df(sum_airplanes_g_df)
+    return sum_airplanes_g_df
 
 
 if __name__ == '__main__':
