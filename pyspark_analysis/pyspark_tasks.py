@@ -1,6 +1,5 @@
 from pyspark.sql import SparkSession, DataFrame
-from pyspark.sql import functions as F
-from pyspark.sql.functions import max, col
+from pyspark.sql.functions import max
 from pyspark.sql.types import *
 
 JSON_PATH = r"C:\Users\anoliinyk\Documents\SoftServe_Internship\SoftServe-Internship_ETL-project\OpenSkyDataExtractor\all_states.json"
@@ -31,14 +30,20 @@ def show_df(df: DataFrame):
 
 def get_highest_altitude(df: DataFrame):
     print("Airplane(s) with highest geo altitude:")
-    max_altitude_df = df.withColumn("icao24", col("icao24")).agg(F.max("geo_altitude").alias("geo_altitude"))
-    show_df(max_altitude_df)
+    max_altitude_df = df.select([max("geo_altitude")])
+    max_altitude = max_altitude_df.first()[0]
+    max_altitude_df2 = df.select(df["icao24"], df["geo_altitude"]).filter(df["geo_altitude"] == max_altitude)
+    show_df(max_altitude_df2)
+    return max_altitude_df2
 
 
 def get_highest_velocity(df: DataFrame):
     print("\nAirplane(s) with highest velocity:")
     max_velocity_df = df.select([max("velocity")])
-    show_df(max_velocity_df)
+    max_velocity = max_velocity_df.first()[0]
+    max_velocity_df2 = df.select(df["icao24"], df["velocity"]).filter(df["velocity"] == max_velocity)
+    show_df(max_velocity_df2)
+    return max_velocity_df2
 
 
 def get_airplanes_count_by_airport(df: DataFrame):
@@ -47,8 +52,9 @@ def get_airplanes_count_by_airport(df: DataFrame):
     show_df(airplanes_count_df)
 
 
-states_df = create_df()
-get_highest_altitude(states_df)
-get_highest_velocity(states_df)
-get_airplanes_count_by_airport(states_df)
-SPARK.stop()
+if __name__ == '__main__':
+    states_df = create_df()
+    get_highest_altitude(states_df)
+    get_highest_velocity(states_df)
+    get_airplanes_count_by_airport(states_df)
+    SPARK.stop()
