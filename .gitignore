@@ -7,3 +7,4 @@ airflow/dags/configs/opensky_credentials.json
 __pycache__/
 airflow.db
 airflow/data
+pyspark_analysis/config.py
