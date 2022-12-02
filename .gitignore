@@ -7,5 +7,6 @@ airflow/dags/configs/opensky_credentials.json
 __pycache__/
 airflow.db
 airflow/data
+configs/project_path.py
 .pytest_cache
 */.pytest_cache
