@@ -24,8 +24,7 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 def create_df():
     json_as_df = SPARK.read.json(JSON_PATH)
-    states_only_column = json_as_df.select("states").collect()[0]
-    states_list = states_only_column.__getitem__("states")
+    states_list = json_as_df.select("states").first()[0]
     df = SPARK.createDataFrame(data=states_list, schema=DF_SCHEMA)
     return df
 
