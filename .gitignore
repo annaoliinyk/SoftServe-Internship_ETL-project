@@ -8,3 +8,5 @@ __pycache__/
 airflow.db
 airflow/data
 configs/project_path.py
+.pytest_cache
+*/.pytest_cache
