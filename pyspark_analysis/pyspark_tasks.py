@@ -6,7 +6,8 @@ from pyspark.sql import SparkSession, DataFrame
 from pyspark.sql.functions import max, min, sum
 from pyspark.sql.types import *
 
-from pyspark_analysis.config import *
+from configs.project_path import project_local_path
+from configs.config import *
 
 JSON_PATH = os.path.join(project_local_path, r"OpenSkyDataExtractor\all_states.json")
 SPARK = SparkSession.builder.appName("SparkSQL").getOrCreate()
@@ -39,13 +40,13 @@ class MySparkCalculations:
 
     def get_highest_altitude(self):
         logging.info("Airplane(s) with highest geo altitude:")
-        max_altitude_df = self.get_highest_of_column(self.states_df, column_id, column_altitude)
+        max_altitude_df = self.get_highest_of_column(self.states_df, COLUMN_ID, COLUMN_ALTITUDE)
         self.show_df(max_altitude_df)
         return max_altitude_df
 
     def get_highest_velocity(self):
         logging.info("Airplane(s) with highest velocity:")
-        max_velocity_df = self.get_highest_of_column(self.states_df, column_id, column_velocity)
+        max_velocity_df = self.get_highest_of_column(self.states_df, COLUMN_ID, COLUMN_VELOCITY)
         self.show_df(max_velocity_df)
         return max_velocity_df
 
@@ -63,7 +64,7 @@ class MySparkCalculations:
 
     def get_airplanes_count_by_airport(self):
         logging.info("Count of airplanes by airport:")
-        airplanes_count_df = self.states_df.groupBy(column_country).count()
+        airplanes_count_df = self.states_df.groupBy(COLUMN_COUNTRY).count()
         self.show_df(airplanes_count_df)
         self.get_country_min_count_airplanes(airplanes_count_df)
         self.get_country_max_count_airplanes(airplanes_count_df)
@@ -74,13 +75,13 @@ class MySparkCalculations:
 
     def get_country_min_count_airplanes(self, airplanes_df: DataFrame):
         logging.info("Countries with smallest number of airplanes")
-        min_count_airplanes_df = self.get_minimum_of_column(airplanes_df, column_country, column_count)
+        min_count_airplanes_df = self.get_minimum_of_column(airplanes_df, COLUMN_COUNTRY, COLUMN_COUNT)
         self.show_df(min_count_airplanes_df)
         return min_count_airplanes_df
 
     def get_country_max_count_airplanes(self, airplanes_df: DataFrame):
         logging.info("Countries with largest number of airplanes")
-        max_count_airplanes_df = self.get_highest_of_column(airplanes_df, column_country, column_count)
+        max_count_airplanes_df = self.get_highest_of_column(airplanes_df, COLUMN_COUNTRY, COLUMN_COUNT)
         self.show_df(max_count_airplanes_df)
         return max_count_airplanes_df
 
@@ -99,14 +100,14 @@ class MySparkCalculations:
     def get_count_for_countries(self, df, first_letter: str):
         countries_on_g_df = df.filter(df.origin_country.startswith(first_letter))
         sum_airplanes_df = countries_on_g_df.select(
-            [sum(column_count).alias("sum of airplanes from countries starting with " + first_letter)])
+            [sum(COLUMN_COUNT).alias("sum of airplanes from countries starting with " + first_letter)])
         return sum_airplanes_df
 
     def get_count_for_france_neighbours(self, airplanes_df: DataFrame):
         logging.info("Sum of airplanes of France neighbour countries:")
-        france_neighbours_df = airplanes_df.filter(airplanes_df.origin_country.isin(france_neighbours))
+        france_neighbours_df = airplanes_df.filter(airplanes_df.origin_country.isin(FRANCE_NEIGHBOURS))
         sum_airplanes_df = france_neighbours_df.select(
-            [sum(column_count).alias("sum of airplanes of neighbours of France")])
+            [sum(COLUMN_COUNT).alias("sum of airplanes of neighbours of France")])
         self.show_df(sum_airplanes_df)
         return sum_airplanes_df
 
