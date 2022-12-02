@@ -1,4 +1,5 @@
 import logging
+import os
 import sys
 
 from pyspark.sql import SparkSession, DataFrame
@@ -7,6 +8,7 @@ from pyspark.sql.types import *
 
 from config import *
 
+JSON_PATH = os.path.join(project_local_path, r"OpenSkyDataExtractor\all_states.json")
 SPARK = SparkSession.builder.appName("SparkSQL").getOrCreate()
 DF_SCHEMA = StructType([StructField("icao24", StringType(), True), StructField("callsign", StringType(), True),
                         StructField("origin_country", StringType(), True),
