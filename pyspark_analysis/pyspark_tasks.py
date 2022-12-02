@@ -6,7 +6,7 @@ from pyspark.sql import SparkSession, DataFrame
 from pyspark.sql.functions import max, min, sum
 from pyspark.sql.types import *
 
-from config import *
+from pyspark_analysis.config import *
 
 JSON_PATH = os.path.join(project_local_path, r"OpenSkyDataExtractor\all_states.json")
 SPARK = SparkSession.builder.appName("SparkSQL").getOrCreate()
@@ -110,10 +110,5 @@ class MySparkCalculations:
         self.show_df(sum_airplanes_df)
         return sum_airplanes_df
 
-
-if __name__ == '__main__':
-    spark_task_obj = MySparkCalculations()
-    spark_task_obj.get_highest_altitude()
-    spark_task_obj.get_highest_velocity()
-    spark_task_obj.get_airplanes_count_by_airport()
-    SPARK.stop()
+    def stop_spark(self):
+        SPARK.stop()
